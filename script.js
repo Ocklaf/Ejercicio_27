@@ -25,3 +25,120 @@ Film Noir, Game-Show, History, Horror, Musical, Music, Mystery,
 News, Reality-TV, Romance, Sci-Fi, Short, Sport, Talk-Show, 
 Thriller, War, Western.
  */
+
+class Pelicula {
+  constructor({idIMDB, titulo, director, anioEstreno, origen, genero, calificacionIMDB}){
+    this.idIMDB = idIMDB
+    this.titulo = titulo
+    this.director = director
+    this.anioEstreno = anioEstreno
+    this.origen = origen
+    this.genero = genero
+    this.calificacionIMDB = calificacionIMDB
+
+    this.verificaIdIMDB(idIMDB)
+    this.verificaTitulo(titulo)
+    this.verificaDirector(director)
+    this.verificaAnioEstreno(anioEstreno)
+    this.verificaOrigen(origen)
+    this.verificarGenero(genero)
+  }
+
+  standardCadena(propiedad, valor){
+    if(!valor) return console.warn(`El campo ${valor} está vacío`)
+    if(typeof valor !== "string") return console.warn(`El campo ${propiedad} no es una cadena de texto`)
+    return true
+  }
+
+  standardNumero(propiedad, valor){
+    if(!valor) return console.warn(`El campo ${valor} está vacío`)
+    if(typeof valor !== "number") return console.warn(`El campo ${propiedad} no puede ser distinto de un valor numérico`)
+    return true
+  }
+
+  verificaIdIMDB (idIMDB) {
+    if(this.standardCadena("idIMDB", idIMDB)){
+      if(idIMDB.length !== 9) return console.warn("El campo idIMDB no tiene el número de carácteres necesario (9, dos primeros letras, resto números)")
+      if(!(/^([A-Za-z]){2}([0-9]){7}$/.test(idIMDB))) return console.error("El campo idIMDB sólo puede contener 2 letras al principio seguido de 7 números")
+    }
+  }
+
+  verificaTitulo(titulo){
+    if(this.standardCadena("Título", titulo)){
+      if(titulo.length>100) return console.error("El título de la película no puede contener más de 100 carácteres")
+    }
+  }
+
+  verificaDirector(director){
+    if(this.standardCadena("Director", director)){
+      if(director.length>50) return console.error("El título de la película no puede contener más de 100 carácteres")
+    }
+  }
+
+  verificaAnioEstreno(anioEstreno){
+    if(this.standardNumero("Año de estreno", anioEstreno)){
+      if(!(/^([0-9]){4}$/.test(anioEstreno))) console.error(`El año de estreno debe tener 4 dígitos y ser positivo`)
+    }
+  }
+
+  verificaOrigen(origen){
+    if(origen === undefined) return console.warn(`El valor "Origen" no se ha definido`)
+    if(!(origen instanceof Array)) return console.error("El origen u origenes, debe de ser un Array")
+    if(origen.length === 0) return console.warn("El array no tiene datos")
+    for(let valor of origen)
+      if(typeof valor !== "string") console.error("Los datos del Origen de la película, deben ser texto")
+  }
+
+  verificarGenero(genero){
+    if(genero === undefined) return console.warn(`El valor "Género" no se ha definido`)
+    if(!(genero instanceof Array)) return console.error("El genero, debe de ser un Array")
+    if(genero.length === 0) return console.warn("El array no tiene datos")
+    for(let valor of genero)
+      if(typeof valor !== "string") console.error("Los datos del Género de la película, deben ser texto")
+  
+     /*  const generosAceptados = {Action, 
+        Adult, 
+        Adventure, 
+        Animation,
+        Biography, 
+        Comedy, 
+        Crime, 
+        Documentary,
+        Drama, 
+        Family, 
+        Fantasy, 
+        FilmNoir,
+        GameShow,
+        History, 
+        Horror, 
+        Musical,
+        Music, 
+        Mystery,
+        News, 
+        RealityTV,
+        Romance, 
+        SciFi,
+        Short, 
+        Sport, 
+        TalkShow,
+        Thriller,
+        War, 
+        Western}    
+
+      if(this.standardCadena("Género", genero)){
+        //if(genero !== generosAceptados) console.error("El género no es válido")
+      }
+   */
+   }
+
+  }
+
+
+
+const interestelar = new Pelicula({idIMDB: "tt3456789",
+                                  titulo: "Lo que el viento se llevó",
+                                  director: "Steven Spilberg",
+                                  anioEstreno: 1999,
+                                  origen: ["España", "EEUU"],
+                                  genero: ["Atún"]}) 
+console.log(interestelar)
