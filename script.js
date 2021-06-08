@@ -42,9 +42,26 @@ class Pelicula {
     this.verificaAnioEstreno(anioEstreno)
     this.verificaOrigen(origen)
     this.verificarGenero(genero)
+    this.verificarcalificacionIMDB(calificacionIMDB)
+  }
+
+  mostrarpelicula(peli){
+    console.info(peli)
+  }
+
+  mostrar3pelis(variaspelis = undefined){
+    if(variaspelis === undefined) return console.warn(`El valor "Origen" no se ha definido`)
+    if(!(variaspelis instanceof Array)) return console.error("El origen u origenes, debe de ser un Array")
+    if(variaspelis.length === 0) return console.warn("El array no tiene datos")
+    if(variaspelis.length !== 7) return console.error("Faltan datos de la película")
+    for(let valor of variaspelis){
+      if(!(verificaIdIMDB(valor))) return console.error("idIMDB NO es válido")
+      if(!(verificaTitulo(valor))) return console.error("El Título NO está")
+    }
   }
 
   standardCadena(propiedad, valor){
+    if(valor === undefined) return console.warn(`No se ha definido el campo ${propiedad}`)
     if(!valor) return console.warn(`El campo ${valor} está vacío`)
     if(typeof valor !== "string") return console.warn(`El campo ${propiedad} no es una cadena de texto`)
     return true
@@ -57,6 +74,7 @@ class Pelicula {
   }
 
   verificaIdIMDB (idIMDB) {
+    if(idIMDB === undefined) return console.error("No ha introducido nada en idIMDB")
     if(this.standardCadena("idIMDB", idIMDB)){
       if(idIMDB.length !== 9) return console.warn("El campo idIMDB no tiene el número de carácteres necesario (9, dos primeros letras, resto números)")
       if(!(/^([A-Za-z]){2}([0-9]){7}$/.test(idIMDB))) return console.error("El campo idIMDB sólo puede contener 2 letras al principio seguido de 7 números")
@@ -130,9 +148,60 @@ class Pelicula {
       }
    */
    }
+  
+  verificarcalificacionIMDB(calificacionIMDB){
+    if(calificacionIMDB === undefined) return console.warn(`El valor "Calificación IMDB" no se ha definido`)
+    if(typeof calificacionIMDB !== "number") console.error("La calificación IMDB sólo admite valores numéricos")
+    if(Math.sign(calificacionIMDB) === -1 || Math.sign(calificacionIMDB) === 0 | Math.sign(calificacionIMDB) === -0) return console.error("El valor de la nota no puede ser ni 0 ni negativo. Sólo números enteros o con 1 decimal")
+    if(calificacionIMDB > calificacionIMDB.toFixed(1)) return console.error("No puede tener más de un decimal")
+  }
 
   }
 
+
+trestitulos = ["tt1234567", "El Lazarillo de Tormes", "Desconocido", 1840, ["España"], ["Comedia"], 8.4,
+              "tt7654321", "Pipi Calzaslargas", "Pipi Directora", 1981, ["Inglaterra"], ["Risa"], 7.7,
+              "kY9876543", "TerminaAitor", "Steven Spilberg", 1984, ["EEUU"], ["Ciencia Ficción"], 9.9]
+
+const creaclases = (trestitulos) => {
+  if(trestitulos === undefined) return console.warn(`No ha enviado ningún dato`)
+  if(!(trestitulos instanceof Array)) return console.error("Los datos deben de ser un Array")
+  if(trestitulos.length === 0) return console.warn("El array está vacío")
+  if(trestitulos.length !== 21) return console.error("Faltan datos de las 3 películas, revíselo")
+
+  const peli1 = new Pelicula({    idIMDB: trestitulos[0],
+                                  titulo: trestitulos[1],
+                                  director: trestitulos[2],
+                                  anioEstreno: trestitulos[3],
+                                  origen: trestitulos[4],
+                                  genero: trestitulos[5],
+                                  calificacionIMDB: trestitulos[6]
+  })
+
+  console.info(peli1)
+
+  const peli2 = new Pelicula({    idIMDB: trestitulos[7],
+                                  titulo: trestitulos[8],
+                                  director: trestitulos[9],
+                                  anioEstreno: trestitulos[10],
+                                  origen: trestitulos[11],
+                                  genero: trestitulos[12],
+                                  calificacionIMDB: trestitulos[13]
+})
+
+console.info(peli2)
+
+const peli3 = new Pelicula({    idIMDB: trestitulos[14],
+                                titulo: trestitulos[15],
+                                director: trestitulos[16],
+                                anioEstreno: trestitulos[17],
+                                origen: trestitulos[18],
+                                genero: trestitulos[19],
+                                calificacionIMDB: trestitulos[20]
+})
+
+console.info(peli3)
+}
 
 
 const interestelar = new Pelicula({idIMDB: "tt3456789",
@@ -140,5 +209,12 @@ const interestelar = new Pelicula({idIMDB: "tt3456789",
                                   director: "Steven Spilberg",
                                   anioEstreno: 1999,
                                   origen: ["España", "EEUU"],
-                                  genero: ["Atún"]}) 
-console.log(interestelar)
+                                  genero: ["Terror"],
+                                  calificacionIMDB: 1}) 
+
+//creaclases()
+//creaclases(true)
+//creaclases([])
+//creaclases(["hola", "tiene menos datos", 345, true])
+creaclases(trestitulos)
+//interestelar.mostrarpelicula(interestelar)
